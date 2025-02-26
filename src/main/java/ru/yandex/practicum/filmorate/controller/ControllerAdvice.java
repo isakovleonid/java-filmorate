@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import jakarta.validation.ValidationException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
