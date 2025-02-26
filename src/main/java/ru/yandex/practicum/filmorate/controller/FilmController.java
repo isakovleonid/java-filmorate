@@ -1,13 +1,10 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.format.Formatter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.FilmValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.LocalDateFormatter;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -16,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
+@Slf4j
 public class FilmController {
     Map<Long, Film> films = new HashMap<>();
 
@@ -31,12 +29,7 @@ public class FilmController {
     }
 
     private boolean isValidFilm(Film film) {
-        return /*film.getName() != null
-                && !film.getName().isBlank()
-                && (film.getDescription() == null || film.getDescription().length() <= MAX_LEN_DESCRIPTION)
-                &&*/ !film.getReleaseDate().isBefore(MIN_RELEASE_DATE)
-               /* && film.getDuration() != null
-                && film.getDuration() > 0*/;
+        return !film.getReleaseDate().isBefore(MIN_RELEASE_DATE);
     }
 
     @GetMapping
@@ -58,24 +51,23 @@ public class FilmController {
 
     @PutMapping
     public Film update(@Valid @RequestBody Film newFilm) {
-        if (newFilm.getId() == null)
+        if (newFilm.getId() == null) {
+            log.error("Не указан id фильма");
             throw new FilmValidationException("Не указан id фильма");
+        }
 
         if (films.containsKey(newFilm.getId())) {
-            if (!isValidFilm(newFilm))
+            if (!isValidFilm(newFilm)) {
+                log.error("Не пройдена проверка атрибутов фильма");
                 throw new FilmValidationException("Не пройдена проверка атрибутов фильма");
+            }
 
             films.put(newFilm.getId(), newFilm);
 
             return newFilm;
         }
 
+        log.error("Не найден фильм");
         throw new FilmValidationException("Не найден фильм");
-    }
-
-    @Bean
-    @Primary
-    public Formatter<LocalDate> localDateFormatter() {
-        return new LocalDateFormatter();
     }
 }

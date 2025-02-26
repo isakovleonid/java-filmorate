@@ -1,9 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,6 +12,7 @@ import java.time.LocalDate;
 public class Film {
     Long id;
     @NotNull
+    @Pattern(regexp = "^(\\S|\\s)+$")
     String name;
     @Size(max = 200)
     String description;
