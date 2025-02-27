@@ -6,28 +6,24 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.FilmValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
+    volatile Long maxId = 0L;
     Map<Long, User> users = new HashMap<>();
 
     private long getNextId() {
-        long currentMaxId = users.values().stream()
-                .mapToLong(User::getId)
-                .max()
-                .orElse(0);
-
-        return ++currentMaxId;
+        return ++maxId;
     }
 
     @GetMapping
-    public Collection<User> getAll() {
-        return users.values();
+    public List<User> getAll() {
+        return users.values().stream().toList();
     }
 
     @PostMapping
@@ -48,15 +44,15 @@ public class UserController {
             throw new FilmValidationException("Не указан id пользователя");
         }
 
-        if (users.containsKey(newUser.getId())) {
-            fillAttrByDefault(newUser);
-            users.put(newUser.getId(), newUser);
-
-            return newUser;
+        if (!users.containsKey(newUser.getId())) {
+            log.error("Не найден пользователь");
+            throw new FilmValidationException("Не найден пользователь");
         }
 
-        log.error("Не найден пользователь");
-        throw new FilmValidationException("Не найден пользователь");
+        fillAttrByDefault(newUser);
+        users.put(newUser.getId(), newUser);
+
+        return newUser;
     }
 
     private void fillAttrByDefault(final User user) {
