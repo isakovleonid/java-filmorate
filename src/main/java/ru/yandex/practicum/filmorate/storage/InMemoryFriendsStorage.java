@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class InMemoryFriendsStorage implements FriendsStorage{
+public class InMemoryFriendsStorage implements FriendsStorage {
     private final Map<Long, Set<Long>> friends = new HashMap<>();
 
     @Override

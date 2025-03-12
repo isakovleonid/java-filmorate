@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface FilmLikesStorage {
     void add(Long filmId, Long userId);
+
     void delete(Long filmId, Long userId);
+
     List<Long> getMostPopularFilms(Long filmCount);
 }
