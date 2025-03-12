@@ -4,22 +4,24 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
-    Long id;
+    private Long id;
 
     @Email
-    String email;
+    private String email;
 
     @NotNull
     @NotEmpty
     @NotBlank
     @Pattern(regexp = "^\\S+$")
-    String login;
+    private String login;
 
-    String name;
+    private String name;
 
     @Past
-    LocalDate birthday;
+    private LocalDate birthday;
 }
