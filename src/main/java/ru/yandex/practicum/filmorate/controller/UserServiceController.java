@@ -23,7 +23,7 @@ public class UserServiceController {
     }
 
     @GetMapping
-    public List<User> geAlltUserFriends(@PathVariable("userId") @NotNull Long userId) {
+    public List<User> getAlltUserFriends(@PathVariable("userId") @NotNull Long userId) {
         return userService.getAllUserFriends(userId);
     }
 

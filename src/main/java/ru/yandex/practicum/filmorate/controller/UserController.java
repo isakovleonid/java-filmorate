@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserStorage userStorage;
+    private final FriendsStorage friendsStorage;
 
     @GetMapping
     public List<User> getAll() {
@@ -31,8 +34,10 @@ public class UserController {
         return userStorage.update(newUser);
     }
 
-    @DeleteMapping
-    public void delete(@Valid @RequestBody User user) {
-        userStorage.delete(user);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") @NotNull Long userId) {
+        // удаляем друзей пользователя
+        friendsStorage.deleteUser(userId);
+        userStorage.delete(userId);
     }
 }
