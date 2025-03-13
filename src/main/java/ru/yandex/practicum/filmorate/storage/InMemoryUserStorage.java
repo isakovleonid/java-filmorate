@@ -21,8 +21,9 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     private void fillAttrByDefault(final User user) {
-        if (user.getName() == null)
+        if (user.getName() == null) {
             user.setName(user.getLogin());
+        }
     }
 
     @Override

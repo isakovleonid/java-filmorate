@@ -1,38 +1,32 @@
 package ru.yandex.practicum.filmorate.service;
 
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmLikesStorage;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class FilmService {
-    private final FilmLikesStorage filmLikesStorage;
     private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
 
-    public void add(Long filmId, Long userId) {
-        userStorage.checkExists(userId);
-        filmStorage.checkExists(filmId);
-
-        filmLikesStorage.add(filmId, userId);
+    public List<ru.yandex.practicum.filmorate.model.Film> getAll() {
+        return filmStorage.getAll();
     }
 
-    public void delete(Long filmId, Long userId) {
-        userStorage.checkExists(userId);
-        filmStorage.checkExists(filmId);
-
-        filmLikesStorage.delete(filmId, userId);
+    public ru.yandex.practicum.filmorate.model.Film add(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film newFilm) {
+        return filmStorage.add(newFilm);
     }
 
-    public List<Film> getMostPopularFilms(Long filmCount) {
-        return filmLikesStorage.getMostPopularFilms(filmCount).stream()
-                .map(filmStorage::getFilm)
-                .toList();
+    public ru.yandex.practicum.filmorate.model.Film update(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film newFilm) {
+        return filmStorage.update(newFilm);
+    }
+
+    public void delete(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film film) {
+        filmStorage.delete(film);
     }
 }

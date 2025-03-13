@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -16,28 +17,25 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
-    private final UserStorage userStorage;
-    private final FriendsStorage friendsStorage;
+    private final UserService userService;
 
     @GetMapping
     public List<User> getAll() {
-        return userStorage.getAll();
+        return userService.getAll();
     }
 
     @PostMapping
-    public User create(@Valid @RequestBody User newUser) {
-        return userStorage.add(newUser);
+    public User add(@Valid @RequestBody User newUser) {
+        return userService.add(newUser);
     }
 
     @PutMapping
     public User update(@Valid @RequestBody User newUser) {
-        return userStorage.update(newUser);
+        return userService.update(newUser);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") @NotNull Long userId) {
-        // удаляем друзей пользователя
-        friendsStorage.deleteUser(userId);
-        userStorage.delete(userId);
+        userService.delete(userId);
     }
 }

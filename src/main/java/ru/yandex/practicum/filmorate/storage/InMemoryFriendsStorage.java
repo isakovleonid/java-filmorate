@@ -10,16 +10,18 @@ public class InMemoryFriendsStorage implements FriendsStorage {
 
     @Override
     public void add(Long userId, Long friendId) {
-        if (!friends.containsKey(userId))
+        if (!friends.containsKey(userId)) {
             friends.put(userId, new HashSet<>());
+        }
 
         friends.get(userId).add(friendId);
     }
 
     @Override
     public void delete(Long userId, Long friendId) {
-        if (friends.containsKey(userId))
+        if (friends.containsKey(userId)) {
             friends.get(userId).remove(friendId);
+        }
     }
 
     // TODO: этот метод надо где-то вызвать при удалении пользователя.
@@ -40,9 +42,10 @@ public class InMemoryFriendsStorage implements FriendsStorage {
     public List<Long> getAllUserFriends(Long userId) {
         List<Long> list = List.of();
 
-        if (friends.containsKey(userId))
+        if (friends.containsKey(userId)) {
             list = friends.get(userId).stream()
-                .toList();
+                    .toList();
+        }
 
        return list;
     }
@@ -51,10 +54,11 @@ public class InMemoryFriendsStorage implements FriendsStorage {
     public List<Long> getCommonFriends(Long userId, Long otherUserId) {
         List<Long> list = List.of();
 
-        if (friends.containsKey(userId))
+        if (friends.containsKey(userId)) {
             list = friends.get(userId).stream()
                     .filter(friends.get(otherUserId)::contains)
                     .toList();
+        }
 
         return list;
     }

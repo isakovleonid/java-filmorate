@@ -1,59 +1,38 @@
 package ru.yandex.practicum.filmorate.service;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final FriendsStorage  friends;
     private final UserStorage userStorage;
 
-    public void addFriend(Long userId, Long friendId) {
-        userStorage.checkExists(userId);
-        userStorage.checkExists(friendId);
+    private final FriendsStorage friendsStorage;
 
-        // друзья должны быть взаимно
-        friends.add(userId, friendId);
-        friends.add(friendId, userId);
+    public List<User> getAll() {
+        return userStorage.getAll();
     }
 
-    public void deleteFriend(Long userId, Long friendId) {
-        userStorage.checkExists(userId);
-        userStorage.checkExists(friendId);
-
-        // При удалении друзей связь удаляется взаимно
-        friends.delete(userId, friendId);
-        friends.delete(friendId, userId);
+    public User add(@Valid @RequestBody User newUser) {
+        return userStorage.add(newUser);
     }
 
-    public void deleteUser(Long userId) {
-        userStorage.checkExists(userId);
-
-        friends.deleteUser(userId);
+    public User update(@Valid @RequestBody User newUser) {
+        return userStorage.update(newUser);
     }
 
-    public List<User> getAllUserFriends(Long userId) {
-        userStorage.checkExists(userId);
-
-        return friends.getAllUserFriends(userId).stream()
-                .map(userStorage::getUser)
-                .toList();
-    }
-
-    public List<User> getCommonFriends(Long userId, Long otherUserId) {
-        userStorage.checkExists(userId);
-        userStorage.checkExists(otherUserId);
-
-        return friends.getCommonFriends(userId, otherUserId).stream()
-                .map(userStorage::getUser)
-                .toList();
-
+    public void delete(@PathVariable("id") @NotNull Long userId) {
+        // удаляем друзей пользователя
+        friendsStorage.deleteUser(userId);
+        userStorage.delete(userId);
     }
 }

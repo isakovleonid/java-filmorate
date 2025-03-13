@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.FilmLikeService;
 
 import java.util.List;
 
@@ -13,21 +13,21 @@ import java.util.List;
 @RequestMapping("/films")
 @Slf4j
 @RequiredArgsConstructor
-public class FilmServiceController {
-    private final FilmService filmService;
+public class FilmLikeController {
+    private final FilmLikeService filmLikeService;
 
     @PutMapping("/{filmId}/like/{userId}")
     public void addLike(@PathVariable("filmId") @NotNull Long filmId, @PathVariable("userId") @NotNull Long userId) {
-        filmService.add(filmId, userId);
+        filmLikeService.add(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
     public void deleteLike(@PathVariable("filmId") @NotNull Long filmId, @PathVariable("userId") @NotNull Long userId) {
-        filmService.delete(filmId, userId);
+        filmLikeService.delete(filmId, userId);
     }
 
     @GetMapping("/popular")
     public List<Film> getMostPopularFilms(@RequestParam(name = "count", defaultValue = "10") Long count) {
-        return filmService.getMostPopularFilms(count);
+        return filmLikeService.getMostPopularFilms(count);
     }
 }
