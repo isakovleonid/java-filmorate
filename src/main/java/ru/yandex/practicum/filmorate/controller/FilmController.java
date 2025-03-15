@@ -1,54 +1,38 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.FilmValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
 @Slf4j
+@RequiredArgsConstructor
 public class FilmController {
-    volatile Long maxId = 0L;
-    Map<Long, Film> films = new HashMap<>();
-
-    private long getNextId() {
-        return ++maxId;
-    }
+    private final FilmService filmService;
 
     @GetMapping
     public List<Film> getAll() {
-        return films.values().stream().toList();
+        return filmService.getAll();
     }
 
     @PostMapping
-    public Film create(@Valid @RequestBody Film newFilm) {
-        newFilm.setId(getNextId());
-
-        films.put(newFilm.getId(), newFilm);
-
-        return newFilm;
+    public Film add(@Valid @RequestBody Film newFilm) {
+        return filmService.add(newFilm);
     }
 
     @PutMapping
     public Film update(@Valid @RequestBody Film newFilm) {
-        if (newFilm.getId() == null) {
-            log.error("Не указан id фильма");
-            throw new FilmValidationException("Не указан id фильма");
-        }
+        return filmService.update(newFilm);
+    }
 
-        if (!films.containsKey(newFilm.getId())) {
-            log.error("Не найден фильм");
-            throw new FilmValidationException("Не найден фильм");
-        }
-
-        films.put(newFilm.getId(), newFilm);
-
-        return newFilm;
+    @DeleteMapping
+    public void delete(@Valid @RequestBody Film film) {
+        filmService.delete(film);
     }
 }
