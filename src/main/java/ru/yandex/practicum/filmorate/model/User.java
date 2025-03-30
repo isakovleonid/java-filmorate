@@ -9,17 +9,17 @@ import java.time.LocalDate;
 public class User {
     private Long id;
 
-    @Email
+    @Email(message = "Адрес электронной почтый должен соответствовать формату email")
     private String email;
 
     @NotNull
     @NotEmpty
     @NotBlank
-    @Pattern(regexp = "^\\S+$")
+    @Pattern(regexp = "^\\S+$", message = "Логин не должен содержать whitespace-символы")
     private String login;
 
     private String name;
 
-    @Past
+    @Past(message="Дата рождения должна быть в прошлом")
     private LocalDate birthday;
 }

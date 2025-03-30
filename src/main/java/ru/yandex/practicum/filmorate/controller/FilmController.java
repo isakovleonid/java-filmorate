@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class FilmController {
     }
 
     @DeleteMapping
-    public void delete(@Valid @RequestBody Film film) {
-        filmService.delete(film);
+    public void delete(@PathVariable("id") @NotNull Long id) {
+        filmService.delete(id);
     }
 }

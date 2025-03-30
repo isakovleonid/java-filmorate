@@ -7,5 +7,7 @@ public interface FilmLikesStorage {
 
     void delete(Long filmId, Long userId);
 
+    void delete(Long filmId);
+
     List<Long> getMostPopularFilms(Long filmCount);
 }

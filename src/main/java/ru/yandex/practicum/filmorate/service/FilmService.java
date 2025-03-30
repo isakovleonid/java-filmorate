@@ -1,31 +1,44 @@
 package ru.yandex.practicum.filmorate.service;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmLikesStorage;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final FilmLikesStorage filmLikesStorage;
 
-    public List<ru.yandex.practicum.filmorate.model.Film> getAll() {
+    @Autowired
+    public FilmService(@Qualifier("DbFilmStorage") FilmStorage filmStorage,
+                       FilmLikesStorage filmLikesStorage) {
+        this.filmStorage = filmStorage;
+        this.filmLikesStorage = filmLikesStorage;
+    }
+
+    public List<Film> getAll() {
         return filmStorage.getAll();
     }
 
-    public ru.yandex.practicum.filmorate.model.Film add(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film newFilm) {
+    public Film add(Film newFilm) {
         return filmStorage.add(newFilm);
     }
 
-    public ru.yandex.practicum.filmorate.model.Film update(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film newFilm) {
+    public Film update(Film newFilm) {
         return filmStorage.update(newFilm);
     }
 
-    public void delete(@Valid @RequestBody ru.yandex.practicum.filmorate.model.Film film) {
-        filmStorage.delete(film);
+    public void delete(Long id) {
+        filmLikesStorage.delete(id);;
+        filmStorage.delete(id);
     }
 }

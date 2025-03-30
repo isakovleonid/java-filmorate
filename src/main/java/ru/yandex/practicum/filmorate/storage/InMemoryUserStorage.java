@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component
+@Component("InMemoryUserStorage")
 public class InMemoryUserStorage implements UserStorage {
     volatile Long maxId = 0L;
     Map<Long, User> users = new HashMap<>();
@@ -20,11 +20,6 @@ public class InMemoryUserStorage implements UserStorage {
         return ++maxId;
     }
 
-    private void fillAttrByDefault(final User user) {
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
-    }
 
     @Override
     public User add(User newUser) {
@@ -73,7 +68,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
 
         if (!users.containsKey(id)) {
-            log.error("Не найден пользователь c id = " + id);
+            log.error("Не найден пользователь c id = {}", id);
             throw new FilmorateNotFoundException("Не найден пользователь c id = " + id);
         }
 

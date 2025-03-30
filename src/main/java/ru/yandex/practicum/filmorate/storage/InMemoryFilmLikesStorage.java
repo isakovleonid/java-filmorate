@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-@Component
+@Component("InMemoryFilmLikesStorage")
 public class InMemoryFilmLikesStorage implements FilmLikesStorage {
     Map<Long, Set<Long>> filmLikes = new HashMap<>();
 
@@ -31,6 +31,11 @@ public class InMemoryFilmLikesStorage implements FilmLikesStorage {
     }
 
     @Override
+    public void delete(Long filmId) {
+        filmLikes.remove(filmId);
+    }
+
+    @Override
     public List<Long> getMostPopularFilms(Long filmCount) {
         return filmLikes.entrySet().stream()
                 .sorted((o1, o2) -> o2.getValue().size() - o1.getValue().size())
@@ -38,4 +43,5 @@ public class InMemoryFilmLikesStorage implements FilmLikesStorage {
                 .limit(filmCount)
                 .toList();
     }
+
 }
