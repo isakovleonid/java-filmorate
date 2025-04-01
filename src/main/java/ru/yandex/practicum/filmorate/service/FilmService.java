@@ -20,7 +20,7 @@ public class FilmService {
 
     @Autowired
     public FilmService(@Qualifier("DbFilmStorage") FilmStorage filmStorage,
-                       FilmLikesStorage filmLikesStorage) {
+                       @Qualifier("DbFilmLikesStorage") FilmLikesStorage filmLikesStorage) {
         this.filmStorage = filmStorage;
         this.filmLikesStorage = filmLikesStorage;
     }
@@ -38,7 +38,8 @@ public class FilmService {
     }
 
     public void delete(Long id) {
-        filmLikesStorage.delete(id);;
+        filmLikesStorage.deleteAllFilmLikes(id);
+
         filmStorage.delete(id);
     }
 }

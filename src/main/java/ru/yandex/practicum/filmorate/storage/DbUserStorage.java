@@ -15,7 +15,7 @@ import java.util.List;
 @Service("DbUserStorage")
 @RequiredArgsConstructor
 @Slf4j
-public class UserDbStorage implements UserStorage {
+public class DbUserStorage implements UserStorage {
     private final UserRepository userRepository;
 
     @Override

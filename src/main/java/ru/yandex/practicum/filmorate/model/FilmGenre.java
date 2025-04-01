@@ -4,12 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class Friendship {
+public class FilmGenre {
     Long id;
     @NotNull
-    Long userId;
+    Long filmId;
     @NotNull
-    Long    friendId;
-    @NotNull
-    boolean isAccepted;
+    String genreId;
 }

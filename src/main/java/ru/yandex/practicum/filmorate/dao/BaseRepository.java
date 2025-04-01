@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import ru.yandex.practicum.filmorate.exception.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.exception.FilmorateSQLException;
 
 import java.sql.PreparedStatement;
@@ -28,7 +27,6 @@ public class BaseRepository<T> {
 
             for (int i = 0; i < params.length; i++) {
                 st.setObject(i + 1, params[i]);
-
             }
 
             return st;

@@ -13,11 +13,9 @@ import java.util.Optional;
 
 @Repository
 public class FilmRepository extends BaseRepository {
-
     public FilmRepository(JdbcTemplate jdbcTemplate,@Qualifier("FilmRowMapper") RowMapper mapper) {
         super(jdbcTemplate, mapper);
     }
-
     private final String INSERT_QUERY = "insert into Film(name, description, releaseDate, duration, MPArating) " +
             "values (?, ?, ?, ?, ?)";
 

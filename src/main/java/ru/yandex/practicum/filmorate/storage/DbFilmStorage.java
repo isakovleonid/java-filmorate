@@ -13,7 +13,7 @@ import java.util.List;
 @Component("DbFilmStorage")
 @RequiredArgsConstructor
 @Slf4j
-public class FilmDbStorage implements FilmStorage {
+public class DbFilmStorage implements FilmStorage {
     private final FilmRepository filmRepository;
 
     @Override

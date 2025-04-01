@@ -50,12 +50,13 @@ create table if not exists Friendship (
     Foreign key(friendId) references Users(id)
 );
 
-create table if not exists FilmRating (
+create table if not exists FilmLike (
     id  long auto_increment primary key,
     filmId  long,
     userId  long,
     Foreign key(filmId) references Film(id),
-    foreign key(userId) references Users(id)
+    foreign key(userId) references Users(id),
+    unique(filmId, userId)
 );
 
 create table if not exists FilmGenre (
@@ -63,5 +64,6 @@ create table if not exists FilmGenre (
     filmId  long,
     genreId  varchar(16),
     Foreign key(filmId) references Film(id),
-    foreign key(genreId) references Genre(code)
+    foreign key(genreId) references Genre(code),
+    UNIQUE(filmId, genreId)
 );
