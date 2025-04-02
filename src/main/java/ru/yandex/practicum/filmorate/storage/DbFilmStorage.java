@@ -23,11 +23,15 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public Film update(Film film) {
+        checkExists(film.getId());
+
         return filmRepository.update(film);
     }
 
     @Override
     public void delete(Long id) {
+        checkExists(id);
+
         filmRepository.delete(id);
     }
 
@@ -38,14 +42,19 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilm(Long id) {
-        return null;
+        return filmRepository.findById(id).orElse(null);
     }
 
     @Override
     public boolean checkExists(Long id) {
         if (id == null) {
-            log.error("Не указан id пользователя");
+            log.error("Не указан id фильма");
             throw new FilmorateValidationException("Не указан id фильма");
+        }
+
+        if (filmRepository.findById(id).isEmpty()) {
+            log.error("Не найден фильм c id = {}", id);
+            throw new FilmorateNotFoundException("Не найден фильм c id = " + id);
         }
 
         return true;

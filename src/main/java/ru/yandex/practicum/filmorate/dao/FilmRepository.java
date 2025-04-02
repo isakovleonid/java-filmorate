@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.dao;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -30,6 +29,19 @@ public class FilmRepository extends BaseRepository {
 
     private final String FIND_ONE_BY_ID = "select * from Film " +
             "where id = ?";
+
+    private final String FIND_MOST_POPULAR = "select *\n" +
+            "from\n" +
+            "    film f\n" +
+            "where\n" +
+            "    f.id in (select fr.filmId\n" +
+            "             from \n" +
+            "                    FilmRating fr\n" +
+            "             group by \n" +
+            "                    fr.filmId\n" +
+            "             order by\n" +
+            "                    count(fr.filmId)\n" +
+            "             limit ?)";
 
     public Film add(Film film) {
         long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpaRating());
@@ -62,5 +74,9 @@ public class FilmRepository extends BaseRepository {
 
     public Optional<Film> findById(Long id) {
         return findOne(FIND_ONE_BY_ID, id);
+    }
+
+    public List<Film> findMostPopularFilms(Long filmCount) {
+        return findList(FIND_MOST_POPULAR, filmCount);
     }
 }

@@ -51,6 +51,8 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void delete(Long userId) {
+        checkExists(userId);
+
         userRepository.delete(userId);
     }
 
@@ -66,6 +68,8 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User update(User user) {
+        checkExists(user.getId());
+
         return userRepository.update(user);
     }
 }

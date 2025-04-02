@@ -6,7 +6,7 @@ import ru.yandex.practicum.filmorate.dao.FilmLikeRepository;
 
 import java.util.List;
 
-@Component("DbFilmLikeStorage")
+@Component("DbFilmLikesStorage")
 @RequiredArgsConstructor
 public class DbFilmLikeStorage implements FilmLikesStorage {
     private final FilmLikeRepository filmLikeRepository;
@@ -28,6 +28,6 @@ public class DbFilmLikeStorage implements FilmLikesStorage {
 
     @Override
     public List<Long> getMostPopularFilms(Long filmCount) {
-        return filmLikeRepository.findMostPopularFilms(Long filmCount);
+        return filmLikeRepository.findMostPopularFilms(filmCount);
     }
 }

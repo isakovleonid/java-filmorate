@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.FilmorateNotFoundException;
-import ru.yandex.practicum.filmorate.exception.FilmorateNotSupportedMethodException;
+import ru.yandex.practicum.filmorate.exception.FilmorateSQLException;
 import ru.yandex.practicum.filmorate.exception.FilmorateValidationException;
 
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ class ControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({FilmorateValidationException.class, FilmorateNotSupportedMethodException.class})
+    @ExceptionHandler({FilmorateValidationException.class, FilmorateSQLException.class})
     public ErrorDescription handleFilmorateValidationException(Exception e) {
         return new ErrorDescription(e.getMessage());
     }

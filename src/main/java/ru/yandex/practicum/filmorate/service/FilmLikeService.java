@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.FilmLike;
 import ru.yandex.practicum.filmorate.storage.FilmLikesStorage;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -18,7 +17,7 @@ public class FilmLikeService {
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmLikeService(@Qualifier("@FilmLikesStorage") FilmLikesStorage filmLikesStorage,
+    public FilmLikeService(@Qualifier("DbFilmLikesStorage") FilmLikesStorage filmLikesStorage,
                            @Qualifier("DbFilmStorage") FilmStorage filmStorage,
                            @Qualifier("DbUserStorage") UserStorage userStorage) {
         this.filmLikesStorage = filmLikesStorage;
@@ -42,7 +41,7 @@ public class FilmLikeService {
 
     public List<Film> getMostPopularFilms(Long filmCount) {
         return filmLikesStorage.getMostPopularFilms(filmCount).stream()
-                .map(filmStorage::getFilm)
+                .map(i -> {return filmStorage.getFilm(i); })
                 .toList();
     }
 }

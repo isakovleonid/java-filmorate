@@ -20,7 +20,6 @@ public class InMemoryUserStorage implements UserStorage {
         return ++maxId;
     }
 
-
     @Override
     public User add(User newUser) {
         newUser.setId(getNextId());

@@ -5,10 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.FilmorateSQLException;
-import ru.yandex.practicum.filmorate.model.Film;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class FilmLikeRepository extends BaseRepository {
@@ -21,13 +21,15 @@ public class FilmLikeRepository extends BaseRepository {
     private final String DELETE_FILM_QUERY = "delete FilmLike " +
             " where filmId = ?";
 
-    private final String FIND_ALL = "select * from FilmLike";
+    private final String FIND_MOST_POPULAR = "select fr.filmId\n" +
+            "             from \n" +
+            "                    FilmLike fr\n" +
+            "             group by \n" +
+            "                    fr.filmId\n" +
+            "             order by\n" +
+            "                    count(fr.filmId) desc\n" +
+            "             limit ?";
 
-    private final String FIND_ONE_BY_ID = "select * from FilmLike " +
-            "where id = ?";
-
-    private final String FIND_ONE_BY_FILM_USER = "select * from FilmLike " +
-            "where filmId = ? and userId = ?";
 
     public FilmLikeRepository(JdbcTemplate jdbcTemplate, @Qualifier("FilmLikeRowMapper") RowMapper mapper) {
         super(jdbcTemplate, mapper);
@@ -54,6 +56,11 @@ public class FilmLikeRepository extends BaseRepository {
     }
 
     public List<Long> findMostPopularFilms(Long filmCount) {
-        return findList(FIND_ALL);
+        return jdbcTemplate.query(FIND_MOST_POPULAR, new RowMapper<Long>() {
+            @Override
+            public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getLong(1);
+            }
+        }, filmCount);
     }
 }
