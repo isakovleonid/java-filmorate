@@ -1,27 +1,18 @@
 create table if not exists MPARating (
-    code        varchar(16) PRIMARY KEY,
+    id          long auto_increment primary key,
+    code        varchar(16),
     name        varchar(255)
 );
 
-merge into MPARating (code, name) key(code)
-values  ('G', 'G'),
-        ('PG', 'PG'),
-        ('PG13', 'PG-13'),
-        ('R', 'R'),
-        ('NC17', 'NC-17');
+
 
 create table if not exists Genre (
-    code        varchar(16) PRIMARY KEY,
+    id          long auto_increment PRIMARY KEY,
+    code        varchar(16),
     name        varchar(255)
 );
 
-merge into Genre (code, name) key (code)
-values  ('COMEDY', 'Комедия'),
-        ('DRAMA', 'Драва'),
-        ('CARTOON', 'Мультфильм'),
-        ('THRILLER', 'Триллер'),
-        ('DOCUMENTARY', 'Документарный'),
-        ('ACTION', 'Приключение');
+
 
 create table if not exists Film (
     id  long auto_increment primary key,
@@ -29,8 +20,8 @@ create table if not exists Film (
     description varchar(200),
     releaseDate date,
     duration    long,
-    MPArating varchar(16),
-    foreign key(MPARating) references MPARating(code)
+    MPArating long,
+    foreign key(MPARating) references MPARating(id)
 );
 
 create table if not exists Users (
@@ -47,7 +38,8 @@ create table if not exists Friendship (
     friendId    long,
     isAccepted  boolean,
     Foreign key(userId) references Users(id),
-    Foreign key(friendId) references Users(id)
+    Foreign key(friendId) references Users(id),
+    unique(userId, friendId)
 );
 
 create table if not exists FilmLike (
@@ -64,6 +56,6 @@ create table if not exists FilmGenre (
     filmId  long,
     genreId  varchar(16),
     Foreign key(filmId) references Film(id),
-    foreign key(genreId) references Genre(code),
+    foreign key(genreId) references Genre(id),
     UNIQUE(filmId, genreId)
 );

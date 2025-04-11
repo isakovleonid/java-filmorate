@@ -16,7 +16,7 @@ public class UserService {
     private final FriendsStorage friendsStorage;
 
     @Autowired
-    public UserService(FriendsStorage friendsStorage, @Qualifier("DbUserStorage") UserStorage userStorage) {
+    public UserService(@Qualifier("DbFriendsStorage") FriendsStorage friendsStorage, @Qualifier("DbUserStorage") UserStorage userStorage) {
         this.friendsStorage = friendsStorage;
         this.userStorage = userStorage;
     }

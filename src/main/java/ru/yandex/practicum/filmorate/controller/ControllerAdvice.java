@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.Getter;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,7 +34,7 @@ class ControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({FilmorateValidationException.class, FilmorateSQLException.class})
+    @ExceptionHandler({FilmorateValidationException.class/*, FilmorateSQLException.class*/})
     public ErrorDescription handleFilmorateValidationException(Exception e) {
         return new ErrorDescription(e.getMessage());
     }
@@ -50,7 +51,7 @@ class ControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({FilmorateNotFoundException.class})
+    @ExceptionHandler({FilmorateNotFoundException.class, DataIntegrityViolationException.class})
     public ErrorDescription handleFilmorateNotFoundException(Exception e) {
         return new ErrorDescription(e.getMessage());
     }

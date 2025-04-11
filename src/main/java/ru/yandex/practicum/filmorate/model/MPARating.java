@@ -21,4 +21,19 @@ public enum MPARating {
             };
         }
     }
+
+    public static MPARating from(Long id) {
+        if (id == null) {
+            return null;
+        } else {
+            return switch (id.intValue()) {
+                case 1 -> G;
+                case 2 -> PG;
+                case 3 -> PG13;
+                case 4 -> R;
+                case 5 -> NC17;
+                default -> null;
+            };
+        }
+    }
 }

@@ -15,7 +15,7 @@ public class FilmGenreMapper implements RowMapper<FilmGenre> {
 
         filmGenre.setId(rs.getLong("id"));
         filmGenre.setFilmId(rs.getLong("filmId"));
-        filmGenre.setGenreId(rs.getString("genreId"));
+        filmGenre.setGenreId(rs.getLong("genreId"));
 
         return filmGenre;
     }

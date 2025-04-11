@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.model.Friendship;
 
 import java.util.*;
 
@@ -18,6 +19,16 @@ public class InMemoryFriendsStorage implements FriendsStorage {
     }
 
     @Override
+    public boolean isPresent(Long userId, Long friendId) {
+        return friends.get(userId).contains(friendId);
+    }
+
+    @Override
+    public void update(Long userId, Long friendId, Boolean isAccepted) {
+
+    }
+
+    @Override
     public void delete(Long userId, Long friendId) {
         if (friends.containsKey(userId)) {
             friends.get(userId).remove(friendId);
@@ -26,15 +37,7 @@ public class InMemoryFriendsStorage implements FriendsStorage {
 
     @Override
     public void deleteUser(Long userId) {
-       if (friends.containsKey(userId)) {
-           // удаляем пользователя из его друзей...
-           for (Long i : friends.get(userId)) {
-               delete(i, userId);
-           }
-
-           // ....а потом удаляем массив пользователя
-           friends.remove(userId);
-       }
+        friends.remove(userId);
     }
 
     @Override

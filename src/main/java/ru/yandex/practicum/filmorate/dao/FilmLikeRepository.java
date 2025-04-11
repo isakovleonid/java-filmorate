@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.FilmorateSQLException;
+import ru.yandex.practicum.filmorate.model.FilmLike;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,7 @@ public class FilmLikeRepository extends BaseRepository {
             "             limit ?";
 
 
-    public FilmLikeRepository(JdbcTemplate jdbcTemplate, @Qualifier("FilmLikeRowMapper") RowMapper mapper) {
+    public FilmLikeRepository(JdbcTemplate jdbcTemplate, RowMapper<FilmLike> mapper) {
         super(jdbcTemplate, mapper);
     }
 

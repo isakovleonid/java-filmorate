@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.dao;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public class FilmRepository extends BaseRepository {
-    public FilmRepository(JdbcTemplate jdbcTemplate,@Qualifier("FilmRowMapper") RowMapper mapper) {
+    public FilmRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
         super(jdbcTemplate, mapper);
     }
     private final String INSERT_QUERY = "insert into Film(name, description, releaseDate, duration, MPArating) " +
@@ -44,7 +43,7 @@ public class FilmRepository extends BaseRepository {
             "             limit ?)";
 
     public Film add(Film film) {
-        long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpaRating());
+        long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa());
 
         film.setId(id);
 
@@ -57,7 +56,7 @@ public class FilmRepository extends BaseRepository {
                 film.getDescription(),
                 film.getReleaseDate().format(DateTimeFormatter.ISO_DATE),
                 film.getDuration(),
-                film.getMpaRating(),
+                film.getMpa(),
                 film.getId()
         );
 

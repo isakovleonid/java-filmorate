@@ -35,7 +35,7 @@ public class UserRepository extends BaseRepository{
             " where email = ?";
 
     @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate, @Qualifier("RowMapperUser") RowMapper<User> mapper) {
+    public UserRepository(JdbcTemplate jdbcTemplate, RowMapper<User> mapper) {
         super(jdbcTemplate, mapper);
     }
 
