@@ -38,7 +38,7 @@ public class FilmService {
         Film resFilm = filmStorage.getFilm(id);
 
         Set<Long> genresSet = filmGenreStorage.getByFilm(id).stream()
-                .map(g -> {return g.getGenreId();})
+                .map(FilmGenre::getGenreId)
                 .collect(Collectors.toSet());
 
         resFilm.setGenres(genresSet);
@@ -48,15 +48,6 @@ public class FilmService {
 
     public Film add(Film newFilm) {
         Film resFilm = filmStorage.add(newFilm);
-/*
-        newFilm.getGenres().stream()
-                        .map(g -> {
-                            FilmGenre filmGenre = new FilmGenre();
-                            filmGenre.setGenreId(g);
-                            filmGenre.setFilmId(resFilm.getId());
-                            return  filmGenre;})
-                        .peek(filmGenreStorage::add)
-                        .close();*/
 
         for (Long genreId : newFilm.getGenres()) {
             FilmGenre filmGenre = new FilmGenre();
@@ -69,22 +60,12 @@ public class FilmService {
     }
 
     public Film update(Film newFilm) {
-       /* Set<GenreDict> oldFilmGenreSet = newFilm.getGenres();*/
-
         filmGenreStorage.delete_film(newFilm.getId());
 
         Film updFilm = filmStorage.update(newFilm);
 
         Set<Long> updFilmGenreSet = newFilm.getGenres();
         updFilm.setGenres(updFilmGenreSet);
-/*
-        updFilm.getGenres().stream()
-                .map(g -> {FilmGenre filmGenre = new FilmGenre();
-                    filmGenre.setGenreId(g);
-                    filmGenre.setFilmId(updFilm.getId());
-                    return  filmGenre;})
-                .peek(filmGenreStorage::add)
-                .close();*/
 
         return updFilm;
     }

@@ -40,8 +40,6 @@ public class FilmLikeService {
     }
 
     public List<Film> getMostPopularFilms(Long filmCount) {
-        return filmLikesStorage.getMostPopularFilms(filmCount).stream()
-                .map(i -> {return filmStorage.getFilm(i); })
-                .toList();
+        return filmLikesStorage.getMostPopularFilms(filmCount).stream().map(filmStorage::getFilm).toList();
     }
 }
