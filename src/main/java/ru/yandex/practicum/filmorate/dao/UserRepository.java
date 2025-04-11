@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepository extends BaseRepository{
+public class UserRepository extends BaseRepository {
     private static final String INSERT_QUERY = "insert into Users(name, login, birthday, email) " +
             "values (?, ?, ?, ?)";
 
