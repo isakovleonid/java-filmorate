@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.dao.mapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.MPARatingFilm;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

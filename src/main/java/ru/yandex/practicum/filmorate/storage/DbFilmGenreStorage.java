@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.FilmGenreRepository;
 import ru.yandex.practicum.filmorate.model.FilmGenre;
-import ru.yandex.practicum.filmorate.model.GenreDict;
 
 import java.util.Set;
 import java.util.stream.Collectors;

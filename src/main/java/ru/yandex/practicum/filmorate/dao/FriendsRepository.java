@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.exception.FilmorateSQLException;
 import ru.yandex.practicum.filmorate.model.Friendship;
 
 import java.sql.ResultSet;
@@ -14,27 +13,27 @@ import java.util.Optional;
 
 @Repository
 public class FriendsRepository extends BaseRepository {
-    private final String INSERT_QUERY = "insert into Friendship(userId, friendId, isaccepted) " +
+    private static final String INSERT_QUERY = "insert into Friendship(userId, friendId, isaccepted) " +
             "values (?, ?, ?)";
 
-    private final String ACCEPT_QUERY = "update Friendship " +
+    private static final String ACCEPT_QUERY = "update Friendship " +
             " set isaccepted = ? " +
             " where userid = ? and friendid = ? or userid = ? and friendid = ?";
 
-    private final String DELETE_QUERY = "delete Friendship " +
+    private static final String DELETE_QUERY = "delete Friendship " +
             " where userid = ? and friendid = ? or userid = ? and friendid = ?";
 
-    private final String DELETE_ALL_BY_USER  = "delete Friendship " +
+    private static final String DELETE_ALL_BY_USER  = "delete Friendship " +
             " where userid = ? or friendid = ?";
 
-    private final String FIND_ALL_FRIENDS_BY_USER = "select friendid from Friendship  where userid = ?" +
+    private static final String FIND_ALL_FRIENDS_BY_USER = "select friendid from Friendship  where userid = ?" +
             " union " +
             " select userid from Friendship where friendid = ? and isaccepted = true";
 
-    private final String FIND_ONE_BY_USER_FRIEND = "select * from Friendship  where userid = ? and friendid = ? and isaccepted = true" +
+    private static final String FIND_ONE_BY_USER_FRIEND = "select * from Friendship  where userid = ? and friendid = ? and isaccepted = true" +
             " union select * from Friendship  where userid = ? and friendid = ? and isaccepted = true";
 
-    private final String FIND_COMMON_FRIENDS = "(select friendid from Friendship  where userid = ? " +
+    private static final String FIND_COMMON_FRIENDS = "(select friendid from Friendship  where userid = ? " +
             " union " +
             " select userid from Friendship where friendid = ? and isaccepted = true)" +
             " intersect " +

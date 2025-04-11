@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.dao;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,16 +12,16 @@ import java.util.List;
 
 @Repository
 public class FilmLikeRepository extends BaseRepository {
-    private final String INSERT_QUERY = "insert into FilmLike(filmId, userId) " +
+    private static final String INSERT_QUERY = "insert into FilmLike(filmId, userId) " +
             "values (?, ?)";
 
-    private final String DELETE_QUERY = "delete FilmLike " +
+    private static final String DELETE_QUERY = "delete FilmLike " +
             " where filmId = ? and userid = ?";
 
-    private final String DELETE_FILM_QUERY = "delete FilmLike " +
+    private static String DELETE_FILM_QUERY = "delete FilmLike " +
             " where filmId = ?";
 
-    private final String FIND_MOST_POPULAR = "select fr.filmId\n" +
+    private static final String FIND_MOST_POPULAR = "select fr.filmId\n" +
             "             from \n" +
             "                    FilmLike fr\n" +
             "             group by \n" +

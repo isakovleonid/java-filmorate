@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,25 +12,25 @@ import java.util.Optional;
 
 @Repository
 public class UserRepository extends BaseRepository{
-    private final String INSERT_QUERY = "insert into Users(name, login, birthday, email) " +
+    private static final String INSERT_QUERY = "insert into Users(name, login, birthday, email) " +
             "values (?, ?, ?, ?)";
 
-    private final String UPDATE_QUERY = "update Users " +
+    private static final String UPDATE_QUERY = "update Users " +
             " set name = ?, login = ?, birthday = ?, email = ? " +
             " where id = ?";
 
-    private final String DELETE_QUERY = "delete Users " +
+    private static final String DELETE_QUERY = "delete Users " +
             " where id = ?";
 
-    private final String FIND_ALL = "select * from Users";
+    private static final String FIND_ALL = "select * from Users";
 
-    private final String FIND_ONE_BY_ID = "select * from Users " +
+    private static final String FIND_ONE_BY_ID = "select * from Users " +
             " where id = ?";
 
-    private final String FIND_ONE_BY_LOGIN = "select * from Users " +
+    private static final String FIND_ONE_BY_LOGIN = "select * from Users " +
             " where login = ?";
 
-    private final String FIND_ONE_BY_EMAIL = "select * from Users " +
+    private static final String FIND_ONE_BY_EMAIL = "select * from Users " +
             " where email = ?";
 
     @Autowired

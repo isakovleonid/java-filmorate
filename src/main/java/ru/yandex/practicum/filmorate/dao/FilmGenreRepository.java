@@ -9,13 +9,13 @@ import java.util.List;
 
 @Repository
 public class FilmGenreRepository extends BaseRepository {
-    private final String INSERT_QUERY = "insert into FilmGenre(filmId, genreId) " +
+    private static final String INSERT_QUERY = "insert into FilmGenre(filmId, genreId) " +
             "values (?, ?)";
 
-    private final String DELETE_FILM_QUERY = "delete FilmGenre " +
+    private static final String DELETE_FILM_QUERY = "delete FilmGenre " +
             " where filmId = ?";
 
-    private final String FIND_BY_FILM_QUERY = "select id, filmId, genreId from FilmGenre " +
+    private static final String FIND_BY_FILM_QUERY = "select id, filmId, genreId from FilmGenre " +
             " where filmId = ?";
 
     public FilmGenreRepository(JdbcTemplate jdbcTemplate, RowMapper<FilmGenre> mapper) {
