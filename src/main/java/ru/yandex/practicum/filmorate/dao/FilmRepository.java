@@ -14,6 +14,7 @@ public class FilmRepository extends BaseRepository {
     public FilmRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
         super(jdbcTemplate, mapper);
     }
+
     private static final String INSERT_QUERY = "insert into Film(name, description, releaseDate, duration, MPArating) " +
             "values (?, ?, ?, ?, ?)";
 
