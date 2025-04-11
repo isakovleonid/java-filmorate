@@ -51,18 +51,13 @@ public class FriendshipService {
         userStorage.checkExists(userId);
 
         List<Long> allFriendsid = friends.getAllUserFriends(userId);
-        return allFriendsid.stream()
-                .map(userStorage::getUser)
-                .toList();
+        return allFriendsid.stream().map(userStorage::getUser).toList();
     }
 
     public List<User> getCommonFriends(Long userId, Long otherUserId) {
         userStorage.checkExists(userId);
         userStorage.checkExists(otherUserId);
 
-        return friends.getCommonFriends(userId, otherUserId).stream()
-                .map(userStorage::getUser)
-                .toList();
-
+        return friends.getCommonFriends(userId, otherUserId).stream().map(userStorage::getUser).toList();
     }
 }

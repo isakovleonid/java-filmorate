@@ -12,6 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DbFriendsStorage implements FriendsStorage {
     private final FriendsRepository   friendsRepository;
+
     @Override
     public void add(Long userId, Long friendId) {
         friendsRepository.add(userId, friendId);
