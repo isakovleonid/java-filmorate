@@ -20,6 +20,6 @@ public class User {
 
     private String name;
 
-    @Past(message="Дата рождения должна быть в прошлом")
+    @Past(message = "Дата рождения должна быть в прошлом")
     private LocalDate birthday;
 }
