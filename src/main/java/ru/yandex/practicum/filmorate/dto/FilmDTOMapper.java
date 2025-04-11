@@ -52,7 +52,7 @@ public class FilmDTOMapper implements DTOMapper<FilmDTO, Film> {
         Set<GenreDict> genreDictSet = film.getGenres().stream()
                         .filter(Objects::nonNull)
                         .map(g -> {
-                            return genreDictRepository.getById(g);})
+                            return genreDictRepository.getById(g); })
                         .collect(Collectors.toSet());
         filmDTO.setGenres(genreDictSet);
 
