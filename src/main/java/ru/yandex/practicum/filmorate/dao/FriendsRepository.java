@@ -21,10 +21,10 @@ public class FriendsRepository extends BaseRepository {
             " where userid = ? and friendid = ? or userid = ? and friendid = ?";
 
     private static final String DELETE_QUERY = "delete Friendship " +
-            " where userid = ? and friendid = ? or userid = ? and friendid = ?";
+            " where userid = ? and friendid = ? /*or userid = ? and friendid = ?*/";
 
     private static final String DELETE_ALL_BY_USER  = "delete Friendship " +
-            " where userid = ? or friendid = ?";
+            " where userid = ? /*or friendid = ?*/";
 
     private static final String FIND_ALL_FRIENDS_BY_USER = "select friendid from Friendship  where userid = ?" +
             " union " +
@@ -68,12 +68,12 @@ public class FriendsRepository extends BaseRepository {
     }
 
     public void delete(Long userId, Long friendId) {
-        int rowDeleted = jdbcTemplate.update(DELETE_QUERY, userId, friendId, friendId, userId);
+        int rowDeleted = jdbcTemplate.update(DELETE_QUERY, userId, friendId/*, friendId, userId*/);
 
     }
 
     public void deleteByUserId(Long userId) {
-        int rowDeleted = jdbcTemplate.update(DELETE_ALL_BY_USER, userId, userId);
+        int rowDeleted = jdbcTemplate.update(DELETE_ALL_BY_USER, userId/*, userId*/);
 
     }
 
