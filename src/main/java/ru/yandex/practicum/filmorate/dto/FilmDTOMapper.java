@@ -8,10 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.GenreDict;
 import ru.yandex.practicum.filmorate.model.MPARatingFilm;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,7 +51,7 @@ public class FilmDTOMapper implements DTOMapper<FilmDTO, Film> {
         Set<GenreDict> genreDictSet = film.getGenres().stream()
                         .filter(Objects::nonNull)
                         .map(genreDictRepository::getById)
-                        .collect(Collectors.toSet());
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
         filmDTO.setGenres(genreDictSet);
 
         return filmDTO;
