@@ -18,16 +18,6 @@ public class InMemoryFriendsStorage implements FriendsStorage {
     }
 
     @Override
-    public boolean isPresent(Long userId, Long friendId) {
-        return friends.get(userId).contains(friendId);
-    }
-
-    @Override
-    public void update(Long userId, Long friendId, Boolean isAccepted) {
-
-    }
-
-    @Override
     public void delete(Long userId, Long friendId) {
         if (friends.containsKey(userId)) {
             friends.get(userId).remove(friendId);

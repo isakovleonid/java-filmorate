@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.exception.FilmorateValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 @Service("DbUserStorage")
 @RequiredArgsConstructor
@@ -65,8 +64,7 @@ public class DbUserStorage implements UserStorage {
     public User getUser(Long userId) {
         if (userRepository.findById(userId).isEmpty()) {
             throw new FilmorateNotFoundException("Пользователь не найден");
-        }
-        else {
+        } else {
             return userRepository.findById(userId).get();
         }
     }

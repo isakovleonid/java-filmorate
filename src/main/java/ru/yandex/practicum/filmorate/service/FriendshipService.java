@@ -27,11 +27,7 @@ public class FriendshipService {
         userStorage.checkExists(userId);
         userStorage.checkExists(friendId);
 
-        if (friends.isPresent(userId, friendId)) {
-            friends.update(userId, friendId, true);
-        } else {
-            friends.add(userId, friendId);
-        }
+        friends.add(userId, friendId);
     }
 
     public void delete(Long userId, Long friendId) {

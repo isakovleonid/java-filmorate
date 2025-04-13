@@ -44,8 +44,7 @@ public class DbFilmStorage implements FilmStorage {
     public Film getFilm(Long id) {
         if (filmRepository.findById(id).isEmpty()) {
             throw new FilmorateNotFoundException("Пользователь не найден");
-        }
-        else {
+        } else {
             return filmRepository.findById(id).get();
         }
     }

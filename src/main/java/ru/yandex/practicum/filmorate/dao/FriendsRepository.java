@@ -13,33 +13,22 @@ import java.util.Optional;
 
 @Repository
 public class FriendsRepository extends BaseRepository {
-    private static final String INSERT_QUERY = "insert into Friendship(userId, friendId, isaccepted) " +
-            "values (?, ?, ?)";
-
-    private static final String ACCEPT_QUERY = "update Friendship " +
-            " set isaccepted = ? " +
-            " where userid = ? and friendid = ? or userid = ? and friendid = ?";
+    private static final String INSERT_QUERY = "insert into Friendship(userId, friendId) " +
+            "values (?, ?)";
 
     private static final String DELETE_QUERY = "delete Friendship " +
-            " where userid = ? and friendid = ? /*or userid = ? and friendid = ?*/";
+            " where userid = ? and friendid = ?";
 
     private static final String DELETE_ALL_BY_USER  = "delete Friendship " +
-            " where userid = ? /*or friendid = ?*/";
+            " where userid = ?";
 
-    private static final String FIND_ALL_FRIENDS_BY_USER = "select friendid from Friendship  where userid = ?" +
-            " union " +
-            " select userid from Friendship where friendid = ? and isaccepted = true";
+    private static final String FIND_ALL_FRIENDS_BY_USER = "select friendid from Friendship  where userid = ?";
 
-    private static final String FIND_ONE_BY_USER_FRIEND = "select * from Friendship  where userid = ? and friendid = ? and isaccepted = true" +
-            " union select * from Friendship  where userid = ? and friendid = ? and isaccepted = true";
+    private static final String FIND_ONE_BY_USER_FRIEND = "select * from Friendship  where userid = ? and friendid = ?";
 
-    private static final String FIND_COMMON_FRIENDS = "(select friendid from Friendship  where userid = ? " +
-            " union " +
-            " select userid from Friendship where friendid = ? and isaccepted = true)" +
+    private static final String FIND_COMMON_FRIENDS = "select friendid from Friendship  where userid = ? " +
             " intersect " +
-            " (select friendid from Friendship  where userid = ?" +
-            " union " +
-            " select userid from Friendship where friendid = ? and isaccepted = true)";
+            " select friendid from Friendship  where userid = ?";
 
     @Autowired
     public FriendsRepository(JdbcTemplate jdbcTemplate, RowMapper<Friendship> mapper) {
@@ -54,51 +43,35 @@ public class FriendsRepository extends BaseRepository {
     };
 
     public Friendship add(Long userId, Long friendId) {
-        Boolean isAccepted = false;
-        long id = insert(INSERT_QUERY, userId, friendId, isAccepted);
+        long id = insert(INSERT_QUERY, userId, friendId);
 
         Friendship friendship = new Friendship();
 
         friendship.setId(id);
         friendship.setUserId(userId);
         friendship.setFriendId(friendId);
-        friendship.setAccepted(isAccepted);
 
         return friendship;
     }
 
     public void delete(Long userId, Long friendId) {
-        int rowDeleted = jdbcTemplate.update(DELETE_QUERY, userId, friendId/*, friendId, userId*/);
+        int rowDeleted = jdbcTemplate.update(DELETE_QUERY, userId, friendId);
 
     }
 
     public void deleteByUserId(Long userId) {
-        int rowDeleted = jdbcTemplate.update(DELETE_ALL_BY_USER, userId/*, userId*/);
-
-    }
-
-    public Friendship update(Friendship friendship, boolean isAccepted) {
-        update(ACCEPT_QUERY,
-                isAccepted,
-                friendship.getUserId(),
-                friendship.getFriendId(),
-                friendship.getFriendId(),
-                friendship.getUserId());
-
-        friendship.setAccepted(isAccepted);
-
-        return friendship;
+        int rowDeleted = jdbcTemplate.update(DELETE_ALL_BY_USER, userId);
     }
 
     public List<Long> findAllByUser(Long userId) {
-        return jdbcTemplate.query(FIND_ALL_FRIENDS_BY_USER, longRowMapper, userId, userId);
+        return jdbcTemplate.query(FIND_ALL_FRIENDS_BY_USER, longRowMapper, userId);
     }
 
     public Optional<Friendship> findByUserFriend(Long userId, Long friendId) {
-        return findOne(FIND_ONE_BY_USER_FRIEND, userId, friendId, friendId, userId);
+        return findOne(FIND_ONE_BY_USER_FRIEND, userId, friendId);
     }
 
     public List<Long> findCommonFriends(Long user1Id, Long user2Id) {
-        return jdbcTemplate.query(FIND_COMMON_FRIENDS, longRowMapper, user1Id, user1Id, user2Id, user2Id);
+        return jdbcTemplate.query(FIND_COMMON_FRIENDS, longRowMapper, user1Id, user2Id);
     }
 }

@@ -12,8 +12,6 @@ create table if not exists Genre (
     name        varchar(255)
 );
 
-
-
 create table if not exists Film (
     id  long auto_increment primary key,
     name    varchar(255),
@@ -36,7 +34,6 @@ create table if not exists Friendship (
     id          long auto_increment PRIMARY KEY,
     userId      long,
     friendId    long,
-    isAccepted  boolean,
     Foreign key(userId) references Users(id),
     Foreign key(friendId) references Users(id),
     unique(userId, friendId)
