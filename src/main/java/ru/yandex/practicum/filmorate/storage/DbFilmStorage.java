@@ -1,60 +1,52 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.FilmRepository;
 import ru.yandex.practicum.filmorate.exception.FilmorateNotFoundException;
 import ru.yandex.practicum.filmorate.exception.FilmorateValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@Component("DbFilmStorage")
+@RequiredArgsConstructor
 @Slf4j
-@Component("InMemoryFilmStorage")
-public class InMemoryFilmStorage implements FilmStorage {
-    volatile Long maxId = 0L;
-    Map<Long, Film> films = new HashMap<>();
+public class DbFilmStorage implements FilmStorage {
+    private final FilmRepository filmRepository;
 
-    private long getNextId() {
-        return ++maxId;
+    @Override
+    public Film add(Film film) {
+        return filmRepository.add(film);
     }
 
     @Override
-    public Film add(Film newFilm) {
-        newFilm.setId(getNextId());
+    public Film update(Film film) {
+        checkExists(film.getId());
 
-        films.put(newFilm.getId(), newFilm);
-
-        return newFilm;
-    }
-
-    @Override
-    public Film update(Film newFilm) {
-        getFilm(newFilm.getId());
-
-        films.put(newFilm.getId(), newFilm);
-
-        return newFilm;
+        return filmRepository.update(film);
     }
 
     @Override
     public void delete(Long id) {
         checkExists(id);
 
-        films.remove(id);
+        filmRepository.delete(id);
     }
 
     @Override
     public List<Film> getAll() {
-        return films.values().stream().toList();
+        return filmRepository.findAll();
     }
 
     @Override
     public Film getFilm(Long id) {
-        checkExists(id);
-
-        return films.get(id);
+        if (filmRepository.findById(id).isEmpty()) {
+            throw new FilmorateNotFoundException("Пользователь не найден");
+        } else {
+            return filmRepository.findById(id).get();
+        }
     }
 
     @Override
@@ -64,9 +56,9 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new FilmorateValidationException("Не указан id фильма");
         }
 
-        if (!films.containsKey(id)) {
+        if (filmRepository.findById(id).isEmpty()) {
             log.error("Не найден фильм c id = {}", id);
-            throw new FilmorateNotFoundException("Не найден фильм с id = " + id);
+            throw new FilmorateNotFoundException("Не найден фильм c id = " + id);
         }
 
         return true;

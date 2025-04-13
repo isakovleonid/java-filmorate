@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-@Component
+@Component("InMemoryFilmLikesStorage")
 public class InMemoryFilmLikesStorage implements FilmLikesStorage {
     Map<Long, Set<Long>> filmLikes = new HashMap<>();
 
@@ -28,6 +28,11 @@ public class InMemoryFilmLikesStorage implements FilmLikesStorage {
         if (filmLikes.containsKey(filmId)) {
             filmLikes.get(filmId).remove(userId);
         }
+    }
+
+    @Override
+    public void deleteAllFilmLikes(Long filmId) {
+        filmLikes.remove(filmId);
     }
 
     @Override

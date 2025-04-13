@@ -9,11 +9,17 @@ public interface UserStorage {
 
     User update(User user);
 
-    void delete(Long userId);
+    void delete(Long id);
 
     List<User> getAll();
 
     User getUser(Long id);
 
     boolean checkExists(Long id);
+
+    default void fillAttrByDefault(final User user) {
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+        }
+    }
 }

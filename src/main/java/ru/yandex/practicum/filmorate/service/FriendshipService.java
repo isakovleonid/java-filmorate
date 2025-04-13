@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FriendsStorage;
@@ -11,26 +13,28 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserFriendService {
+public class FriendshipService {
     private final FriendsStorage  friends;
     private final UserStorage userStorage;
 
-    public void addFriend(Long userId, Long friendId) {
-        userStorage.checkExists(userId);
-        userStorage.checkExists(friendId);
-
-        // друзья должны быть взаимно
-        friends.add(userId, friendId);
-        friends.add(friendId, userId);
+    @Autowired
+    public FriendshipService(@Qualifier("DbUserStorage") UserStorage userStorage, @Qualifier("DbFriendsStorage") FriendsStorage friends) {
+        this.userStorage = userStorage;
+        this.friends = friends;
     }
 
-    public void deleteFriend(Long userId, Long friendId) {
+    public void add(Long userId, Long friendId) {
         userStorage.checkExists(userId);
         userStorage.checkExists(friendId);
 
-        // При удалении друзей связь удаляется взаимно
+        friends.add(userId, friendId);
+    }
+
+    public void delete(Long userId, Long friendId) {
+        userStorage.checkExists(userId);
+        userStorage.checkExists(friendId);
+
         friends.delete(userId, friendId);
-        friends.delete(friendId, userId);
     }
 
     public void deleteUser(Long userId) {
@@ -42,18 +46,14 @@ public class UserFriendService {
     public List<User> getAllUserFriends(Long userId) {
         userStorage.checkExists(userId);
 
-        return friends.getAllUserFriends(userId).stream()
-                .map(userStorage::getUser)
-                .toList();
+        List<Long> allFriendsid = friends.getAllUserFriends(userId);
+        return allFriendsid.stream().map(userStorage::getUser).toList();
     }
 
     public List<User> getCommonFriends(Long userId, Long otherUserId) {
         userStorage.checkExists(userId);
         userStorage.checkExists(otherUserId);
 
-        return friends.getCommonFriends(userId, otherUserId).stream()
-                .map(userStorage::getUser)
-                .toList();
-
+        return friends.getCommonFriends(userId, otherUserId).stream().map(userStorage::getUser).toList();
     }
 }

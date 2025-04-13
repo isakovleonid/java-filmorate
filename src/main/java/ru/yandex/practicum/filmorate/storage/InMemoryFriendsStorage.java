@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
+@Component("InMemoryFriendsStorage")
 public class InMemoryFriendsStorage implements FriendsStorage {
     private final Map<Long, Set<Long>> friends = new HashMap<>();
 
@@ -24,18 +24,9 @@ public class InMemoryFriendsStorage implements FriendsStorage {
         }
     }
 
-    // TODO: этот метод надо где-то вызвать при удалении пользователя.
     @Override
     public void deleteUser(Long userId) {
-       if (friends.containsKey(userId)) {
-           // удаляем пользователя из его друзей...
-           for (Long i : friends.get(userId)) {
-               delete(i, userId);
-           }
-
-           // ....а потом удаляем массив пользователя
-           friends.remove(userId);
-       }
+        friends.remove(userId);
     }
 
     @Override

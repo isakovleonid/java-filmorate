@@ -1,20 +1,21 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.GenreDict;
+import ru.yandex.practicum.filmorate.model.MPARatingFilm;
 import ru.yandex.practicum.filmorate.validation.DateRange;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Film.
- */
 @Data
-public class Film {
+public class FilmDTO {
     Long id;
-
     @NotBlank(message = "Наименование фильма должно быть заполнено")
     String name;
 
@@ -28,7 +29,6 @@ public class Film {
     @Positive(message = "Длительность фильма должна быть больше 0")
     Long duration;
 
-    Long mpa;
-
-    Set<Long> genres = new HashSet<>();
+    MPARatingFilm mpa;
+    Set<GenreDict> genres = new HashSet<>();
 }
