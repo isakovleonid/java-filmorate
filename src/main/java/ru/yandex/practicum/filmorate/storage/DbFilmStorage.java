@@ -42,7 +42,12 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilm(Long id) {
-        return filmRepository.findById(id).orElse(null);
+        if (filmRepository.findById(id).isEmpty()) {
+            throw new FilmorateNotFoundException("Пользователь не найден");
+        }
+        else {
+            return filmRepository.findById(id).get();
+        }
     }
 
     @Override

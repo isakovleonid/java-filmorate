@@ -45,7 +45,7 @@ public class FilmController {
         return filmDTOMapper.toDTO(filmService.update(film));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") @NotNull Long id) {
         filmService.delete(id);
     }

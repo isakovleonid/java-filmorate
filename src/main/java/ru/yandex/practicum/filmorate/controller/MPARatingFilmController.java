@@ -22,7 +22,7 @@ public class MPARatingFilmController {
     }
 
     @GetMapping("/{id}")
-    public MPARatingFilm getAll(@PathVariable("id") Long id) {
+    public MPARatingFilm getById(@PathVariable("id") Long id) {
         return mpaRatingFilmService.getById(id);
     }
 }
