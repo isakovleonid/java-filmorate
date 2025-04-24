@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.GenreDict;
-import ru.yandex.practicum.filmorate.model.MPARatingFilm;
 import ru.yandex.practicum.filmorate.storage.GenreDictStorage;
 import ru.yandex.practicum.filmorate.storage.MPARatingFilmStorage;
 
-import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -45,19 +43,10 @@ public class FilmDTOMapper implements DTOMapper<FilmDTO, Film> {
         filmDTO.setDuration(film.getDuration());
 
         if (film.getMpa() != null) {
-            MPARatingFilm mpaRatingFilm = mpaRatingFilmStorage.getById(film.getMpa());
-            filmDTO.setMpa(mpaRatingFilm);
+            filmDTO.setMpa(mpaRatingFilmStorage.getById(film.getMpa()));
         }
 
-        Map<Long, GenreDict> mapGenreDict = new HashMap<>();
-        mapGenreDict = genreDictStorage.getAll().stream()
-                .collect(Collectors.toMap(GenreDict::getId, genre -> genre));
-
-        Set<GenreDict> genreDictSet = film.getGenres().stream()
-                        .filter(Objects::nonNull)
-                        .map(mapGenreDict::get)
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
-        filmDTO.setGenres(genreDictSet);
+        filmDTO.setGenres(genreDictStorage.getAllByFilm(filmDTO.getId()));
 
         return filmDTO;
     }

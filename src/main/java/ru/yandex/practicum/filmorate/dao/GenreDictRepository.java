@@ -17,6 +17,8 @@ public class GenreDictRepository extends BaseRepository {
     private static final String FIND_ONE_BY_ID = "select * from Genre " +
             " where id = ?";
 
+    private static final String FIND_ALL_BY_FILM = "select * from Genre where id in (select genreId from FilmGenre fg where fg.filmId = ?)";
+
     @Autowired
     public GenreDictRepository(JdbcTemplate jdbcTemplate, RowMapper<GenreDict> mapper) {
         super(jdbcTemplate, mapper);
@@ -33,5 +35,9 @@ public class GenreDictRepository extends BaseRepository {
 
     public List<GenreDict> getAll() {
         return findList(FIND_ALL);
+    }
+
+    public List<GenreDict> getByFilm(Long filmId) {
+        return findList(FIND_ALL_BY_FILM, filmId);
     }
 }
